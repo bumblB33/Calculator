@@ -102,5 +102,18 @@ namespace Calculator.Tests
             string result = program.Calculate("1\n2,3", "1");
             result.ShouldBe("1 + 2 + 3 = 6");
         }
+        [Test]
+        public void TestNegativeNumberException()
+        {
+            var options = new ProcessInputOptions
+            {
+                Delimiters = new List<string> { ",", "\\n" },
+                DenyNegativeValues = true,
+            };
+
+            var program = new Program(options);
+            string result = program.Calculate("1,-2,3", "1");
+            result.ShouldBe("Negative values are not allowed. You entered: -2\n\n");
+        }
     }
 }

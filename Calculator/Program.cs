@@ -93,6 +93,7 @@ public class Program
             ProcessInputOptions options = new ProcessInputOptions()
             {
                 Delimiters = new List<string> { ",", "\\n" },
+                DenyNegativeValues = true,
             };
             Program Calculator = new Program(options: options);
             string operationResult = Calculator.Calculate();
