@@ -90,5 +90,17 @@ namespace Calculator.Tests
             string result = program.Calculate("1,2,3,4,5,6,7,8,9,10,11,12", "1");
             result.ShouldBe("1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 + 11 + 12 = 78");
         }
+        [Test]
+        public void TestNewLineDelimiter()
+        {
+            var options = new ProcessInputOptions
+            {
+                Delimiters = new List<string> { ",", "\\n" }
+            };
+
+            var program = new Program(options);
+            string result = program.Calculate("1\n2,3", "1");
+            result.ShouldBe("1 + 2 + 3 = 6");
+        }
     }
 }

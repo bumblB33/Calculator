@@ -90,7 +90,10 @@ public class Program
         Console.CancelKeyPress += new ConsoleCancelEventHandler(ExitHandler);
         while (true)
         {
-            ProcessInputOptions options = new ProcessInputOptions();
+            ProcessInputOptions options = new ProcessInputOptions()
+            {
+                Delimiters = new List<string> { ",", "\\n" },
+            };
             Program Calculator = new Program(options: options);
             string operationResult = Calculator.Calculate();
             Console.WriteLine(operationResult); // Ensure this line is executed

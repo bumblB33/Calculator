@@ -86,7 +86,7 @@ public class ProcessInput
                 _inputText = "0";
 
             }
-            _inputText = _inputText.Replace("\\n", "\n");
+            _inputText = _inputText.Replace("\n", "\\n");
             if (options.AllowSingleCustomDelimiter)
             {
                 _inputText = ProcessSingleCustomDelimiter();
