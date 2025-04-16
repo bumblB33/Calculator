@@ -78,5 +78,17 @@ namespace Calculator.Tests
             string result = program.Calculate("5,tytyt", "1");
             result.ShouldBe("5 + 0 = 5");
         }
+        [Test]
+        public void TestNoLimitNumberQuantity()
+        {
+            var options = new ProcessInputOptions
+            {
+                LimitInputQuantity = null,
+            };
+
+            var program = new Program(options);
+            string result = program.Calculate("1,2,3,4,5,6,7,8,9,10,11,12", "1");
+            result.ShouldBe("1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 + 11 + 12 = 78");
+        }
     }
 }

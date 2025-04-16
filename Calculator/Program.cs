@@ -17,7 +17,6 @@ public class Program
     public Program(ProcessInputOptions options) : this()
     {
         this.options = options;
-        this.options.LimitInputQuantity = 2;
 
         Introduction introduction = new Introduction()
         {
@@ -91,10 +90,7 @@ public class Program
         Console.CancelKeyPress += new ConsoleCancelEventHandler(ExitHandler);
         while (true)
         {
-            ProcessInputOptions options = new ProcessInputOptions()
-            {
-                LimitInputQuantity = 2
-            };
+            ProcessInputOptions options = new ProcessInputOptions();
             Program Calculator = new Program(options: options);
             string operationResult = Calculator.Calculate();
             Console.WriteLine(operationResult); // Ensure this line is executed
