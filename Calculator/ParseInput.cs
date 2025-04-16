@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Challenge;
+namespace Calculator;
 
 public class ProcessInputOptions
 {
@@ -48,15 +48,24 @@ public class ProcessInput
 
     }
 
-    public ProcessResult Process()
+    public ProcessResult Process(string? input = null)
     {
+
         _Delimiters = options.Delimiters;
 
-        ReadInput();
+        if (_inputText == null)
+        {
+            _inputText = ReadInput();
+            var numerals = ParseInputToNumerals();
+            return ApplyOptions(numerals);
+        }
+        else
+        {
+            _inputText = ReadInput(input);
+            var numerals = ParseInputToNumerals();
+            return ApplyOptions(numerals);
+        }
 
-        var numerals = ParseInputToNumerals();
-
-        return ApplyOptions(numerals);
     }
 
     public string GetInputText()
@@ -64,44 +73,54 @@ public class ProcessInput
         return _inputText;
     }
 
-    private void ReadInput()
+    private string ReadInput(string? _inputText = null)
     {
-        _inputText = Console.ReadLine() ?? string.Empty;
-
-        if (string.IsNullOrEmpty(_inputText))
         {
-            _inputText = "0";
-            return;
-        }
+            if (_inputText == null)
+            {
+                _inputText = Console.ReadLine() ?? string.Empty;
+            }
 
-        _inputText = _inputText.Replace("\\n", "\n");
+            if (string.IsNullOrEmpty(_inputText))
+            {
+                _inputText = "0";
 
-        if (options.AllowSingleCustomDelimiter)
-        {
-            ProcessSingleCustomDelimiter();
-        }
+            }
+            _inputText = _inputText.Replace("\\n", "\n");
+            if (options.AllowSingleCustomDelimiter)
+            {
+                _inputText = ProcessSingleCustomDelimiter();
+            }
 
-        if (options.AllowMultipleCustomDelimiters)
-        {
-            ProcessMultipleCustomDelimiters();
+            if (options.AllowMultipleCustomDelimiters)
+            {
+                _inputText = ProcessMultipleCustomDelimiters();
+            }
+            return _inputText;
         }
     }
 
-    private void ProcessSingleCustomDelimiter()
+    private string ProcessSingleCustomDelimiter()
     {
         var match = Regex.Match(_inputText, @"^//(.)\n(.*)$", RegexOptions.Singleline);
         if (match.Success)
         {
             var delimiter = match.Groups[1].Value;
-            Console.WriteLine($"Custom delimiter found: {delimiter}");
+            Console.WriteLine($"Custom delimiter found: {delimiter}\n");
             _Delimiters.Add(delimiter);
 
 
             _inputText = match.Groups[2].Value;
-            Console.WriteLine($"Removed custom delimiter definition from the input text: {_inputText}");
+            Console.WriteLine($"Removed custom delimiter definition from the input text: {_inputText}\n");
+            return _inputText;
+        }
+        else
+        {
+            Console.WriteLine("No custom delimiter found.\n");
+            return _inputText;
         }
     }
-    private void ProcessMultipleCustomDelimiters()
+    private string ProcessMultipleCustomDelimiters()
     {
         var match = Regex.Match(_inputText, @"^//(?:\[([^\]]+)\])+\n(.*)$", RegexOptions.Singleline);
         if (match.Success)
@@ -112,11 +131,17 @@ public class ProcessInput
                 .Select(m => m.Groups[1].Value)
                 .ToList();
 
-            Console.WriteLine($"Custom delimiters found: {string.Join(", ", customDelimiters)}");
+            Console.WriteLine($"Custom delimiters found: {string.Join(", ", customDelimiters)}\n");
             _Delimiters.AddRange(customDelimiters);
 
             _inputText = match.Groups[2].Value;
-            Console.WriteLine($"Removed custom delimiter definitions from the input text: {_inputText}");
+            Console.WriteLine($"Removed custom delimiter definitions from the input text: {_inputText}\n");
+            return _inputText;
+        }
+        else
+        {
+            Console.WriteLine("No custom delimiters found.\n");
+            return _inputText;
         }
     }
 
@@ -161,7 +186,7 @@ public class ProcessInput
             if (negatives.Any())
             {
                 result.Success = false;
-                result.ErrorMessage = $"Negative values are not allowed: {string.Join(", ", negatives)}";
+                result.ErrorMessage = $"Negative values are not allowed. You entered: {string.Join(", ", negatives)}\n\n";
                 result.Values = new List<decimal>();
                 return result;
             }
@@ -170,7 +195,8 @@ public class ProcessInput
         if (options.LimitInputQuantity.HasValue && numerals.Count != options.LimitInputQuantity.Value)
         {
             result.Success = false;
-            result.ErrorMessage = $"Expected {options.LimitInputQuantity.Value} numbers, but got {numerals.Count}.";
+            result.ErrorMessage = $"Expected {options.LimitInputQuantity.Value} numbers, but got {numerals.Count}.\n" +
+                                  $"Please provide exactly {options.LimitInputQuantity.Value} numbers.\n";
             result.Values = new List<decimal>();
             return result;
         }
@@ -182,7 +208,12 @@ public class ProcessInput
             {
                 if (numerals[i] > options.MaximumValue.Value)
                 {
+                    result.ErrorMessage = $"The maximum value for number inputs is {options.MaximumValue.Value}. " +
+                                          $"The number you entered that exceeded the limit was {numerals[i]}." +
+                                          "It was replaced with a zero.";
+
                     numerals[i] = 0;
+
                 }
             }
         }

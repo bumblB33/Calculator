@@ -1,5 +1,5 @@
 
-namespace Challenge;
+namespace Calculator;
 
 public class MathOperations
 {
@@ -9,7 +9,6 @@ public class MathOperations
         this.numerals = numerals;
 
     }
-
     public string PerformOperation(string operation)
     {
         string result = "";
@@ -28,8 +27,6 @@ public class MathOperations
 
         }
         return result;
-
-
     }
     internal static string AdditionOperation(List<decimal> numerals)
     {
@@ -38,7 +35,7 @@ public class MathOperations
             return "";
         }
         decimal sum = numerals.Sum();
-        string result = $"The sum of {string.Join(" + ", numerals)} is {sum}";
+        string result = $"{string.Join(" + ", numerals)} = {sum}";
 
         return result;
     }
@@ -53,7 +50,7 @@ public class MathOperations
         {
             difference -= d;
         }
-        string result = $"{numerals[0]} - {string.Join(" - ", numerals[1..])} = {difference}.";
+        string result = $"{numerals[0]} - {string.Join(" - ", numerals[1..])} = {difference}";
         return result;
     }
 
@@ -77,7 +74,7 @@ public class MathOperations
         var zero_values = numerals[1..].FindAll(x => x == 0);
         if (zero_values.Count > 0)
         {
-            throw new DivideByZeroException("Cannot divide by zero. Please try again.");
+            throw new DivideByZeroException("Cannot divide by zero. Please try again.\n");
         }
         var operation_result = numerals[0];
         foreach (decimal d in numerals[1..])

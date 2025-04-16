@@ -1,9 +1,7 @@
-namespace Challenge;
+namespace Calculator;
 public class Introduction()
 {
-
     required public ProcessInputOptions options { get; set; }
-
 
     public Introduction(ProcessInputOptions? inputOptions) : this()
     {
@@ -16,45 +14,6 @@ public class Introduction()
             this.options = inputOptions;
         }
     }
-
-    public void SelectOperation(List<decimal> Numerals)
-    {
-        MathOperations operation = new MathOperations(numerals: Numerals);
-
-        Console.WriteLine("Select a math operation from the following list:");
-        Console.WriteLine("\t1 - Addition");
-        Console.WriteLine("\t2 - Subtraction");
-        Console.WriteLine("\t3 - Multiplication");
-        Console.WriteLine("\t4 - Division");
-        Console.Write("Your option:\n");
-
-        string? v = Console.ReadLine();
-        if (v != null)
-        {
-            switch (v)
-            {
-                case "1":
-                    Console.WriteLine(operation.PerformOperation("Addition"));
-                    break;
-                case "2":
-                    Console.WriteLine(operation.PerformOperation("Subtraction"));
-                    break;
-                case "3":
-                    Console.WriteLine(operation.PerformOperation("Multiplication"));
-                    break;
-                case "4":
-                    Console.WriteLine(operation.PerformOperation("Division"));
-                    break;
-                default:
-                    Console.WriteLine("No valid operation selected. Please try again!");
-                    break;
-            }
-        }
-
-    }
-
-
-
     public void DescribeConfiguration()
     {
         {
@@ -86,6 +45,45 @@ public class Introduction()
                 Console.WriteLine("You can define multiple custom delimiters with the format (//[{delimiter1}][{delimiter2}]...\\n).");
             }
 
+        }
+    }
+
+    public string SelectOperation(List<decimal> Numerals, string? selectedOperation = null)
+    {
+        string v;
+        if (string.IsNullOrEmpty(selectedOperation))
+        {
+            Console.WriteLine("Please select a math operation from the following list:");
+            Console.WriteLine("\t1 - Addition");
+            Console.WriteLine("\t2 - Subtraction");
+            Console.WriteLine("\t3 - Multiplication");
+            Console.WriteLine("\t4 - Division");
+            Console.Write("Your option:\n");
+
+            v = Console.ReadLine() ?? string.Empty;
+        }
+        else
+        {
+            v = selectedOperation ?? string.Empty;
+        }
+        if (string.IsNullOrEmpty(v))
+        {
+            return "No valid operation selected. Please try again!";
+        }
+
+        MathOperations operation = new MathOperations(numerals: Numerals);
+        switch (v)
+        {
+            case "1":
+                return operation.PerformOperation("Addition");
+            case "2":
+                return operation.PerformOperation("Subtraction");
+            case "3":
+                return operation.PerformOperation("Multiplication");
+            case "4":
+                return operation.PerformOperation("Division");
+            default:
+                return "No valid operation selected. Please try again!";
         }
     }
 
