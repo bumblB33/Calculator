@@ -77,6 +77,7 @@ public class Program
                 Delimiters = new List<string> { ",", "\\n" },
                 DenyNegativeValues = true,
                 MaximumValue = 1000,
+                AllowSingleCustomDelimiter = true,
             };
             Program Calculator = new Program(options: options);
             string operationResult = Calculator.Calculate();

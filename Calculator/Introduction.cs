@@ -37,7 +37,7 @@ public class Introduction()
 
             if (options.AllowSingleCustomDelimiter)
             {
-                Console.WriteLine("You can define a single custom delimiter with the format (//{delimiter}\\n).");
+                Console.WriteLine("You can define a single custom delimiter with the format //{delimiter}\\n.");
             }
 
             if (options.AllowMultipleCustomDelimiters)

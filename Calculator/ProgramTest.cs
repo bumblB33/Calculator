@@ -155,5 +155,55 @@ namespace Calculator.Tests
             string result = program.Calculate("1,0", "4");
             result.ShouldBe("Cannot divide by zero. Please try again.\n");
         }
+        [Test]
+        public void TestSingleCustomDelimiter()
+        {
+            var options = new ProcessInputOptions
+            {
+                Delimiters = new List<string> { ",", "\\n" },
+                DenyNegativeValues = true,
+                AllowSingleCustomDelimiter = true,
+            };
+
+            var program = new Program(options);
+            string result = program.Calculate("//#\n2#5", "1");
+            result.ShouldBe("2 + 5 = 7");
+        }
+        [Test]
+        public void TestAlternateSingleCustomDelimiter()
+        {
+            var options = new ProcessInputOptions
+            {
+                Delimiters = new List<string> { ",", "\\n" },
+                DenyNegativeValues = true,
+                AllowSingleCustomDelimiter = true,
+            };
+
+            var program = new Program(options);
+            string result = program.Calculate("//,\n2,ff,100", "1");
+            result.ShouldBe("2 + 0 + 100 = 102");
+
+        }
+        [Test]
+        public void TestInvalidCustomDelimiters()
+        {
+            var options = new ProcessInputOptions
+            {
+                Delimiters = new List<string> { ",", "\\n" },
+                DenyNegativeValues = true,
+                AllowSingleCustomDelimiter = true,
+            };
+
+            var program = new Program(options);
+            string result = program.Calculate("//[;][#]\n1,2#3;4", "1");
+            // String is split on the accepted delimiters \n and ,
+            // Which gives three groups: 
+            //      1. //[;][#]
+            //      2. 1
+            //      3. 2#3;4
+            // The first and last group cannot be parsed as numbers. 
+            // So, they are treated as invalid inputs and replaced by zeroes.
+            result.ShouldBe("0 + 1 + 0 = 1");
+        }
     }
 }

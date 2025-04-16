@@ -87,28 +87,26 @@ public class ProcessInput
 
             }
             _inputText = _inputText.Replace("\n", "\\n");
-            if (options.AllowSingleCustomDelimiter)
+            if (options.AllowSingleCustomDelimiter == true)
             {
-                _inputText = ProcessSingleCustomDelimiter();
+                _inputText = ProcessSingleCustomDelimiter(string.IsNullOrEmpty(_inputText) ? "0" : _inputText);
             }
 
-            if (options.AllowMultipleCustomDelimiters)
+            if (options.AllowMultipleCustomDelimiters == true)
             {
-                _inputText = ProcessMultipleCustomDelimiters();
+                _inputText = ProcessMultipleCustomDelimiters(_inputText: _inputText);
             }
             return _inputText;
         }
     }
 
-    private string ProcessSingleCustomDelimiter()
+    private string ProcessSingleCustomDelimiter(string _inputText)
     {
-        var match = Regex.Match(_inputText, @"^//(.)\n(.*)$", RegexOptions.Singleline);
+        var match = Regex.Match(_inputText, pattern: @"^//(.)\\n(.*)$");
         if (match.Success)
         {
-            var delimiter = match.Groups[1].Value;
-            Console.WriteLine($"Custom delimiter found: {delimiter}\n");
-            _Delimiters.Add(delimiter);
-
+            Console.WriteLine($"Custom delimiter found: {match.Groups[1].Value}\n");
+            _Delimiters.Add(match.Groups[1].Value);
 
             _inputText = match.Groups[2].Value;
             Console.WriteLine($"Removed custom delimiter definition from the input text: {_inputText}\n");
@@ -120,9 +118,9 @@ public class ProcessInput
             return _inputText;
         }
     }
-    private string ProcessMultipleCustomDelimiters()
+    private string ProcessMultipleCustomDelimiters(string _inputText)
     {
-        var match = Regex.Match(_inputText, @"^//(?:\[([^\]]+)\])+\n(.*)$", RegexOptions.Singleline);
+        var match = Regex.Match(_inputText, @"^//(?:\[([^\]]+)\])+\\n(.*)$", RegexOptions.Singleline);
         if (match.Success)
         {
             var delimiterMatches = Regex.Matches(_inputText, @"\[([^\]]+)\]");
