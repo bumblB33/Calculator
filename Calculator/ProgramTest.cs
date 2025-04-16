@@ -115,5 +115,45 @@ namespace Calculator.Tests
             string result = program.Calculate("1,-2,3", "1");
             result.ShouldBe("Negative values are not allowed. You entered: -2\n\n");
         }
+        [Test]
+        public void TestEmptyInput()
+        {
+            var options = new ProcessInputOptions
+            {
+                Delimiters = new List<string> { ",", "\\n" },
+                DenyNegativeValues = true,
+            };
+
+            var program = new Program(options);
+            string result = program.Calculate("", "1");
+            result.ShouldBe("0 + 0 = 0");
+        }
+        [Test]
+        public void TestMaximumValueExceeded()
+        {
+            var options = new ProcessInputOptions
+            {
+                Delimiters = new List<string> { ",", "\\n" },
+                DenyNegativeValues = true,
+                MaximumValue = 1000,
+            };
+
+            var program = new Program(options);
+            string result = program.Calculate("1,2000,3", "1");
+            result.ShouldBe("1 + 0 + 3 = 4");
+        }
+        [Test]
+        public void TestDivideByZeroException()
+        {
+            var options = new ProcessInputOptions
+            {
+                Delimiters = new List<string> { ",", "\\n" },
+                DenyNegativeValues = true,
+            };
+
+            var program = new Program(options);
+            string result = program.Calculate("1,0", "4");
+            result.ShouldBe("Cannot divide by zero. Please try again.\n");
+        }
     }
 }

@@ -48,7 +48,7 @@ public class ProcessInput
 
     }
 
-    public ProcessResult Process(string? input = null)
+    public ProcessResult Process(string? input)
     {
 
         _Delimiters = options.Delimiters;
@@ -165,14 +165,10 @@ public class ProcessInput
         }
 
         // If there is only one string
-        if (numerals.Count == 0 && !string.IsNullOrWhiteSpace(_inputText))
+        if (numerals.Count == 1)
         {
-            if (decimal.TryParse(_inputText, out decimal value))
-            {
-                numerals.Add(value);
-            }
+            numerals.Add(InvalidInputReplacement);
         }
-
         return numerals;
     }
 
@@ -208,9 +204,9 @@ public class ProcessInput
             {
                 if (numerals[i] > options.MaximumValue.Value)
                 {
-                    result.ErrorMessage = $"The maximum value for number inputs is {options.MaximumValue.Value}. " +
-                                          $"The number you entered that exceeded the limit was {numerals[i]}." +
-                                          "It was replaced with a zero.";
+                    Console.WriteLine($"The maximum value for number inputs is {options.MaximumValue.Value}.\n" +
+                                          $"The number you entered that exceeded the limit was {numerals[i]}.\n" +
+                                          "It was replaced with a zero.\n");
 
                     numerals[i] = 0;
 

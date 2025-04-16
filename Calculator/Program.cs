@@ -41,33 +41,15 @@ public class Program
     public string Calculate(string? inputs = null, string? _operation = null)
     {
         Introduction.DescribeConfiguration();
-
         List<decimal> Numerals;
-        if (string.IsNullOrEmpty(inputs))
+        ProcessResult Result = Input.Process(input: inputs);
+        if (Result.Success == false)
         {
-            ProcessResult Result = Input.Process();
-
-            if (Result.Success == false)
-            {
-                return Result.ErrorMessage;
-            }
-            Numerals = Result.Values;
-            string operationResult = GetResult(_operation, Numerals);
-            return operationResult;
-
+            return Result.ErrorMessage;
         }
-        else
-        {
-            ProcessResult Result = Input.Process(input: inputs);
-            if (Result.Success == false)
-            {
-                return Result.ErrorMessage;
-            }
-            Numerals = Result.Values;
-            string operationResult = GetResult(_operation, Numerals);
-            return operationResult;
-
-        }
+        Numerals = Result.Values;
+        string operationResult = GetResult(_operation, Numerals);
+        return operationResult;
     }
 
     private string GetResult(string? _operation, List<decimal> Numerals)
@@ -94,6 +76,7 @@ public class Program
             {
                 Delimiters = new List<string> { ",", "\\n" },
                 DenyNegativeValues = true,
+                MaximumValue = 1000,
             };
             Program Calculator = new Program(options: options);
             string operationResult = Calculator.Calculate();
