@@ -37,7 +37,15 @@ public class Introduction()
 
             if (options.AllowSingleCharCustomDelimiter)
             {
-                Console.WriteLine("You can define a single character custom delimiter with the format //{delimiter}\\n.");
+                Console.WriteLine("You can also define a single character custom delimiter.");
+                Console.WriteLine("Add one by prefixing your input using the format //{delimiter}\\n.");
+                Console.WriteLine("Example: //#\\n2#5 and the Addition operation will return 7.");
+            }
+            if (options.AllowMultiCharCustomDelimiter)
+            {
+                Console.WriteLine("You can also define a multi-character custom delimiter.");
+                Console.WriteLine("Add one by prefixing your input using the format //{delimiter}\\n.");
+                Console.WriteLine("Example: //[***]\\n1***2,100 and the Addition operation will return 103.");
             }
 
             if (options.AllowMultipleCustomDelimiters)

@@ -14,8 +14,11 @@ public class ProcessInputOptions
 
     public bool DenyNegativeValues { get; set; }
 
-    // Whether a single custom delimiter can be defined with the format (//{delimiter}\n).
+    // Whether a single character custom delimiter can be defined with the format (//{delimiter}\n).
     public bool AllowSingleCharCustomDelimiter { get; set; }
+
+    // Whether one multi-character custom delimiter can be defined with the format (//{delimiter}\n).
+    public bool AllowMultiCharCustomDelimiter { get; set; }
 
     // Whether multiple custom delimiters can be defined with the format (//[{delimiter}][{delimiter}]...\n).
     public bool AllowMultipleCustomDelimiters { get; set; }
@@ -92,6 +95,11 @@ public class ProcessInput
                 _inputText = ProcessSingleCharCustomDelimiter(string.IsNullOrEmpty(_inputText) ? "0" : _inputText);
             }
 
+            if (options.AllowMultiCharCustomDelimiter == true)
+            {
+                _inputText = ProcessMultiCharCustomDelimiter(string.IsNullOrEmpty(_inputText) ? "0" : _inputText);
+            }
+
             if (options.AllowMultipleCustomDelimiters == true)
             {
                 _inputText = ProcessMultipleCustomDelimiters(_inputText: _inputText);
@@ -116,6 +124,27 @@ public class ProcessInput
         {
             Console.WriteLine("No custom delimiter found.\n");
             Console.WriteLine("Was your custom delimiter longer than a single character?\n");
+            Console.WriteLine("If so, please try again.\n");
+            return _inputText;
+        }
+    }
+
+    private string ProcessMultiCharCustomDelimiter(string _inputText)
+    {
+        var match = Regex.Match(_inputText, pattern: @"^//\[(.*)\]\\n(.*)$");
+        if (match.Success)
+        {
+            Console.WriteLine($"Custom delimiter found: {match.Groups[1].Value}\n");
+            _Delimiters.Add(match.Groups[1].Value);
+
+            _inputText = match.Groups[2].Value;
+            Console.WriteLine($"Removed custom delimiter definition from the input text: {_inputText}\n");
+            return _inputText;
+        }
+        else
+        {
+            Console.WriteLine("No custom delimiter found.\n");
+            Console.WriteLine("Did you try to define multiple custom delimiters?\n");
             Console.WriteLine("If so, please try again.\n");
             return _inputText;
         }

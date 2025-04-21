@@ -205,5 +205,33 @@ namespace Calculator.Tests
             // So, they are treated as invalid inputs and replaced by zeroes.
             result.ShouldBe("0 + 1 + 0 = 1");
         }
+        [Test]
+        public void TestMultiCharCustomDelimiter()
+        {
+            var options = new ProcessInputOptions
+            {
+                Delimiters = new List<string> { ",", "\\n" },
+                DenyNegativeValues = true,
+                AllowMultiCharCustomDelimiter = true,
+            };
+
+            var program = new Program(options);
+            string result = program.Calculate("//[***]\n1***2,100", "1");
+            result.ShouldBe("1 + 2 + 100 = 103");
+        }
+        [Test]
+        public void TestMultiCharCustomDelimiterUsage()
+        {
+            var options = new ProcessInputOptions
+            {
+                Delimiters = new List<string> { ",", "\\n" },
+                DenyNegativeValues = true,
+                AllowMultiCharCustomDelimiter = true,
+            };
+
+            var program = new Program(options);
+            string result = program.Calculate("//[***][#]\n1***2#3", "1");
+            result.ShouldBe("0 + 0 = 0");
+        }
     }
 }
