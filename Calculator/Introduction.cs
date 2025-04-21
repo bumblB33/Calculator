@@ -35,9 +35,9 @@ public class Introduction()
                 Console.WriteLine("Negative values are not allowed.");
             }
 
-            if (options.AllowSingleCustomDelimiter)
+            if (options.AllowSingleCharCustomDelimiter)
             {
-                Console.WriteLine("You can define a single custom delimiter with the format //{delimiter}\\n.");
+                Console.WriteLine("You can define a single character custom delimiter with the format //{delimiter}\\n.");
             }
 
             if (options.AllowMultipleCustomDelimiters)

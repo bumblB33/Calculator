@@ -1,10 +1,6 @@
-// 1.Support a maximum of 2 numbers using a comma delimiter.Throw an exception when more than 2 numbers are provided
-// 	* examples: `20` will return `20`; `1,5000` will return `5001`; `4,-3` will return `1`
-// 	* empty input or missing numbers should be converted to `0`
-// 	* invalid numbers should be converted to `0` e.g. `5, tytyt` will return `5`
-
-using System.Management;
-
+// 6.Support 1 custom delimiter of a single character using the format: `//{delimiter}\n{numbers}`
+// 	*examples: `//#\n2#5` will return `7`; `//,\n2,ff,100` will return `102` 
+// 	*all previous formats should also be supported
 namespace Calculator;
 public class Program
 {
@@ -77,7 +73,7 @@ public class Program
                 Delimiters = new List<string> { ",", "\\n" },
                 DenyNegativeValues = true,
                 MaximumValue = 1000,
-                AllowSingleCustomDelimiter = true,
+                AllowSingleCharCustomDelimiter = true,
             };
             Program Calculator = new Program(options: options);
             string operationResult = Calculator.Calculate();

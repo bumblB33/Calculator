@@ -15,7 +15,7 @@ public class ProcessInputOptions
     public bool DenyNegativeValues { get; set; }
 
     // Whether a single custom delimiter can be defined with the format (//{delimiter}\n).
-    public bool AllowSingleCustomDelimiter { get; set; }
+    public bool AllowSingleCharCustomDelimiter { get; set; }
 
     // Whether multiple custom delimiters can be defined with the format (//[{delimiter}][{delimiter}]...\n).
     public bool AllowMultipleCustomDelimiters { get; set; }
@@ -87,9 +87,9 @@ public class ProcessInput
 
             }
             _inputText = _inputText.Replace("\n", "\\n");
-            if (options.AllowSingleCustomDelimiter == true)
+            if (options.AllowSingleCharCustomDelimiter == true)
             {
-                _inputText = ProcessSingleCustomDelimiter(string.IsNullOrEmpty(_inputText) ? "0" : _inputText);
+                _inputText = ProcessSingleCharCustomDelimiter(string.IsNullOrEmpty(_inputText) ? "0" : _inputText);
             }
 
             if (options.AllowMultipleCustomDelimiters == true)
@@ -100,7 +100,7 @@ public class ProcessInput
         }
     }
 
-    private string ProcessSingleCustomDelimiter(string _inputText)
+    private string ProcessSingleCharCustomDelimiter(string _inputText)
     {
         var match = Regex.Match(_inputText, pattern: @"^//(.)\\n(.*)$");
         if (match.Success)
@@ -115,6 +115,8 @@ public class ProcessInput
         else
         {
             Console.WriteLine("No custom delimiter found.\n");
+            Console.WriteLine("Was your custom delimiter longer than a single character?\n");
+            Console.WriteLine("If so, please try again.\n");
             return _inputText;
         }
     }

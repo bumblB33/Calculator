@@ -156,13 +156,13 @@ namespace Calculator.Tests
             result.ShouldBe("Cannot divide by zero. Please try again.\n");
         }
         [Test]
-        public void TestSingleCustomDelimiter()
+        public void TestSingleCharCustomDelimiter()
         {
             var options = new ProcessInputOptions
             {
                 Delimiters = new List<string> { ",", "\\n" },
                 DenyNegativeValues = true,
-                AllowSingleCustomDelimiter = true,
+                AllowSingleCharCustomDelimiter = true,
             };
 
             var program = new Program(options);
@@ -170,13 +170,13 @@ namespace Calculator.Tests
             result.ShouldBe("2 + 5 = 7");
         }
         [Test]
-        public void TestAlternateSingleCustomDelimiter()
+        public void TestAlternateSingleCharCustomDelimiter()
         {
             var options = new ProcessInputOptions
             {
                 Delimiters = new List<string> { ",", "\\n" },
                 DenyNegativeValues = true,
-                AllowSingleCustomDelimiter = true,
+                AllowSingleCharCustomDelimiter = true,
             };
 
             var program = new Program(options);
@@ -191,7 +191,7 @@ namespace Calculator.Tests
             {
                 Delimiters = new List<string> { ",", "\\n" },
                 DenyNegativeValues = true,
-                AllowSingleCustomDelimiter = true,
+                AllowSingleCharCustomDelimiter = true,
             };
 
             var program = new Program(options);
