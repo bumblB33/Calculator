@@ -3,8 +3,8 @@ Restaurant365 Code Challenge - String Calculator
 
 ## End Project Summary
 A calculator written in C# that supports requirements 1-8 (listed below) along with stretch goals 1,2, and 5. 
-Arguably, stretch goal three is also completed, but it was done with constructor overloads and not via the command line, so I chose not to count it.
-I chose to use the Shoudly framework with NUnit for unit testing - the tests are easier to read, and the test results are more verbose and help simplify debugging.
+Arguably, stretch goal 3 is also completed, but it was done with constructor overloads and not via the command line, so I chose not to count it.
+I chose to use the Shouldly framework with NUnit for unit testing - the tests are easier to read, and the test results are more verbose and help simplify debugging.
  
 * Provide code via a public distributed version control repository i.e. GitHub. Do NOT fork this repo
 * Console application using the language defined by your interviewer
