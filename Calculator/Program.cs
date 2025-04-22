@@ -1,5 +1,5 @@
-// 7.Support 1 custom delimiter of any length using the format: `//[{delimiter}]\n{numbers}`
-// 	*example: `//[***]\n11***22***33` will return `66`
+// 8.Support multiple delimiters of any length using the format: `//[{delimiter1}][{delimiter2}]...\n{numbers}`
+// 	*example: `//[*][!!][r9r]\n11r9r22*hh*33!!44` will return `110`
 // 	*all previous formats should also be supported
 
 namespace Calculator;
@@ -74,7 +74,7 @@ public class Program
                 Delimiters = new List<string> { ",", "\\n" },
                 DenyNegativeValues = true,
                 MaximumValue = 1000,
-                AllowMultiCharCustomDelimiter = true,
+                AllowMultipleCustomDelimiters = true,
             };
             Program Calculator = new Program(options: options);
             string operationResult = Calculator.Calculate();

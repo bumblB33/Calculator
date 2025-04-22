@@ -155,13 +155,20 @@ public class ProcessInput
         if (match.Success)
         {
             var delimiterMatches = Regex.Matches(_inputText, @"\[([^\]]+)\]");
-            var customDelimiters = delimiterMatches
-                .Cast<Match>()
-                .Select(m => m.Groups[1].Value)
-                .ToList();
 
-            Console.WriteLine($"Custom delimiters found: {string.Join(", ", customDelimiters)}\n");
-            _Delimiters.AddRange(customDelimiters);
+            foreach (Match delimiterMatch in delimiterMatches)
+            {
+                if (delimiterMatch.Success)
+                {
+                    _Delimiters.Add(delimiterMatch.Groups[1].Value);
+                }
+            }
+
+            Console.WriteLine($"Delimiters accepted:\n");
+            for (int i = 0; i < _Delimiters.Count; i++)
+            {
+                Console.WriteLine($"Delimiter {i + 1}: {_Delimiters[i]}");
+            }
 
             _inputText = match.Groups[2].Value;
             Console.WriteLine($"Removed custom delimiter definitions from the input text: {_inputText}\n");

@@ -18,8 +18,11 @@ public class Introduction()
     {
         {
             Console.WriteLine("Welcome to the calculator! Please enter your numbers, separating them with delimiters.");
-            Console.WriteLine($"The default delimiters accepted are: {string.Join(" or ", options.Delimiters)}");
-
+            Console.WriteLine($"Delimiters accepted:\n");
+            for (int i = 0; i < options.Delimiters.Count; i++)
+            {
+                Console.WriteLine($"Delimiter {i + 1}: {options.Delimiters[i]}");
+            }
             if (options.MaximumValue.HasValue)
             {
                 Console.WriteLine($"Set maximum value for numeric input to {options.MaximumValue}.");
@@ -50,7 +53,10 @@ public class Introduction()
 
             if (options.AllowMultipleCustomDelimiters)
             {
-                Console.WriteLine("You can define multiple custom delimiters with the format (//[{delimiter1}][{delimiter2}]...\\n).");
+                Console.WriteLine("You can define multiple custom delimiters of any length by prefixing your input.");
+                Console.WriteLine("Add them using the format //[{delimiter1}][{delimiter2}]...\\n).");
+                Console.WriteLine("Example: //[***][#]\\n1***2#100 and the Addition operation will return 103.");
+
             }
 
         }
@@ -82,13 +88,13 @@ public class Introduction()
         MathOperations operation = new MathOperations(numerals: Numerals);
         switch (v)
         {
-            case "1":
+            case "1" or "Addition":
                 return operation.PerformOperation("Addition");
-            case "2":
+            case "2" or "Subtraction":
                 return operation.PerformOperation("Subtraction");
-            case "3":
+            case "3" or "Multiplication":
                 return operation.PerformOperation("Multiplication");
-            case "4":
+            case "4" or "Division":
                 return operation.PerformOperation("Division");
             default:
                 return "No valid operation selected. Please try again!";

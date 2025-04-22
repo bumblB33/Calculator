@@ -233,5 +233,75 @@ namespace Calculator.Tests
             string result = program.Calculate("//[***][#]\n1***2#3", "1");
             result.ShouldBe("0 + 0 = 0");
         }
+        [Test]
+        public void TestMultipleCustomDelimiters()
+        {
+            var options = new ProcessInputOptions
+            {
+                Delimiters = new List<string> { ",", "\\n" },
+                DenyNegativeValues = true,
+                AllowMultipleCustomDelimiters = true,
+            };
+
+            var program = new Program(options);
+            string result = program.Calculate("//[***][#]\n1***2#3", "1");
+            result.ShouldBe("1 + 2 + 3 = 6");
+        }
+        [Test]
+        public void TestMultipleCustomDelimitersWithInvalidInput()
+        {
+            var options = new ProcessInputOptions
+            {
+                Delimiters = new List<string> { ",", "\\n" },
+                DenyNegativeValues = true,
+                AllowMultipleCustomDelimiters = true,
+            };
+
+            var program = new Program(options);
+            string result = program.Calculate("//[***][#]\n1***2#3,tytyt", "1");
+            result.ShouldBe("1 + 2 + 3 + 0 = 6");
+        }
+        [Test]
+        public void TestMultipleCustomDelimitersWithInvalidInput2()
+        {
+            var options = new ProcessInputOptions
+            {
+                Delimiters = new List<string> { ",", "\\n" },
+                DenyNegativeValues = true,
+                AllowMultipleCustomDelimiters = true,
+            };
+
+            var program = new Program(options);
+            string result = program.Calculate("//[***][#]\n1***2#3,tytyt,1000", "1");
+            result.ShouldBe("1 + 2 + 3 + 0 + 1000 = 1006");
+        }
+        [Test]
+        public void TestMultipleCustomDelimitersWithDivision()
+        {
+            var options = new ProcessInputOptions
+            {
+                Delimiters = new List<string> { ",", "\\n" },
+                DenyNegativeValues = true,
+                AllowMultipleCustomDelimiters = true,
+            };
+
+            var program = new Program(options);
+            string result = program.Calculate("//[***][#]\n1***2#3", "Division");
+            result.ShouldBe("1 / 2 / 3 = 0.1667");
+        }
+        [Test]
+        public void TestMultipleDelimitersWithInvalidInput()
+        {
+            var options = new ProcessInputOptions
+            {
+                Delimiters = new List<string> { ",", "\\n" },
+                DenyNegativeValues = true,
+                AllowMultipleCustomDelimiters = true,
+            };
+
+            var program = new Program(options);
+            string result = program.Calculate("//[***][#]\n1***2#3,tytyt", "Division");
+            result.ShouldBe("Cannot divide by zero. Please try again.\n");
+        }
     }
 }

@@ -86,7 +86,8 @@ public class MathOperations
             {
                 operation_result /= d;
             }
-            string result = $"{numerals[0]} / {string.Join(", ", numerals[1..])} = {operation_result}";
+            operation_result = Math.Round(operation_result, 4);
+            string result = $"{string.Join(" / ", numerals[0..])} = {operation_result}";
             return result;
         }
         catch (DivideByZeroException ex)
